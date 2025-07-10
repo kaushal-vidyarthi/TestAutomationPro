@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Test Automation Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Main Navigation -->
+        <nav class="main-nav">
+            <div class="nav-brand">
+                <i class="fas fa-robot"></i>
+                <span>AI Test Automation Pro</span>
+            </div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </button>
+                <button class="nav-tab" data-tab="crawler">
+                    <i class="fas fa-spider"></i>
+                    Web Crawler
+                </button>
+                <button class="nav-tab" data-tab="tests">
+                    <i class="fas fa-flask"></i>
+                    Test Cases
+                </button>
+                <button class="nav-tab" data-tab="ai-generator">
+                    <i class="fas fa-brain"></i>
+                    AI Generator
+                </button>
+                <button class="nav-tab" data-tab="execution">
+                    <i class="fas fa-play-circle"></i>
+                    Test Execution
+                </button>
+                <button class="nav-tab" data-tab="results">
+                    <i class="fas fa-chart-line"></i>
+                    Results
+                </button>
+                <button class="nav-tab" data-tab="reports">
+                    <i class="fas fa-file-alt"></i>
+                    Reports
+                </button>
+                <button class="nav-tab" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </button>
+            </div>
+            <div class="nav-status">
+                <div class="status-indicator" id="connection-status">
+                    <i class="fas fa-circle"></i>
+                    <span>Ready</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="dashboard-header">
+                    <h1>Welcome to AI Test Automation Pro</h1>
+                    <p>Intelligent test automation for Salesforce Experience Cloud</p>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-tests">0</h3>
+                            <p>Total Test Cases</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="passed-tests">0</h3>
+                            <p>Tests Passed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="failed-tests">0</h3>
+                            <p>Tests Failed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="last-run">Never</h3>
+                            <p>Last Test Run</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-actions">
+                    <button class="action-btn primary" id="quick-crawl">
+                        <i class="fas fa-spider"></i>
+                        Start Web Crawl
+                    </button>
+                    <button class="action-btn secondary" id="quick-generate">
+                        <i class="fas fa-brain"></i>
+                        Generate AI Tests
+                    </button>
+                    <button class="action-btn success" id="quick-run">
+                        <i class="fas fa-play"></i>
+                        Run All Tests
+                    </button>
+                </div>
+
+                <div class="recent-activity">
+                    <h2>Recent Activity</h2>
+                    <div class="activity-list" id="activity-list">
+                        <div class="activity-item">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Application started successfully</span>
+                            <time id="startup-time"></time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Web Crawler Tab -->
+            <div id="crawler" class="tab-content">
+                <div class="tab-header">
+                    <h1>Web Crawler</h1>
+                    <p>Analyze Salesforce sites and extract page elements</p>
+                </div>
+
+                <div class="crawler-config">
+                    <h2>Configuration</h2>
+                    <form id="crawler-form">
+                        <div class="form-group">
+                            <label for="site-url">Site URL:</label>
+                            <input type="url" id="site-url" placeholder="https://your-site.force.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="max-pages">Max Pages:</label>
+                            <input type="number" id="max-pages" value="50" min="1" max="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="crawl-depth">Crawl Depth:</label>
+                            <input type="number" id="crawl-depth" value="3" min="1" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="include-forms" checked>
+                                Include Forms
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="include-links" checked>
+                                Include Links
+                            </label>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="crawler-controls">
+                    <button class="btn primary" id="start-crawl">
+                        <i class="fas fa-play"></i>
+                        Start Crawling
+                    </button>
+                    <button class="btn secondary" id="stop-crawl" disabled>
+                        <i class="fas fa-stop"></i>
+                        Stop Crawling
+                    </button>
+                </div>
+
+                <div class="crawler-progress" id="crawler-progress" style="display: none;">
+                    <h3>Crawling Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="crawl-progress-fill"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span id="crawl-status">Initializing...</span>
+                        <span id="crawl-percentage">0%</span>
+                    </div>
+                </div>
+
+                <div class="crawler-results">
+                    <h2>Crawl Results</h2>
+                    <div class="results-table">
+                        <table id="crawl-results-table">
+                            <thead>
+                                <tr>
+                                    <th>URL</th>
+                                    <th>Title</th>
+                                    <th>Elements</th>
+                                    <th>Forms</th>
+                                    <th>Links</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Results will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Cases Tab -->
+            <div id="tests" class="tab-content">
+                <div class="tab-header">
+                    <h1>Test Cases</h1>
+                    <p>Manage and organize your test cases</p>
+                </div>
+
+                <div class="test-controls">
+                    <button class="btn primary" id="new-test">
+                        <i class="fas fa-plus"></i>
+                        New Test Case
+                    </button>
+                    <button class="btn secondary" id="import-tests">
+                        <i class="fas fa-upload"></i>
+                        Import Tests
+                    </button>
+                    <button class="btn secondary" id="export-tests">
+                        <i class="fas fa-download"></i>
+                        Export Tests
+                    </button>
+                    <div class="search-container">
+                        <input type="text" id="test-search" placeholder="Search test cases...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+
+                <div class="test-list">
+                    <table id="test-cases-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="select-all-tests">
+                                </th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Last Modified</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Test cases will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- AI Generator Tab -->
+            <div id="ai-generator" class="tab-content">
+                <div class="tab-header">
+                    <h1>AI Test Generator</h1>
+                    <p>Generate intelligent test cases using AI</p>
+                </div>
+
+                <div class="ai-config">
+                    <h2>AI Configuration</h2>
+                    <form id="ai-generator-form">
+                        <div class="form-group">
+                            <label for="ai-model">AI Model:</label>
+                            <select id="ai-model">
+                                <option value="gpt-4">GPT-4 (Recommended)</option>
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                <option value="claude-3">Claude 3</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="test-types">Test Types:</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="functional" checked> Functional Tests</label>
+                                <label><input type="checkbox" value="ui" checked> UI Tests</label>
+                                <label><input type="checkbox" value="integration"> Integration Tests</label>
+                                <label><input type="checkbox" value="performance"> Performance Tests</label>
+                                <label><input type="checkbox" value="accessibility"> Accessibility Tests</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="test-complexity">Test Complexity:</label>
+                            <select id="test-complexity">
+                                <option value="basic">Basic</option>
+                                <option value="intermediate" selected>Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="custom-requirements">Custom Requirements:</label>
+                            <textarea id="custom-requirements" rows="4" placeholder="Describe specific test requirements or scenarios..."></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="ai-controls">
+                    <button class="btn primary" id="generate-ai-tests">
+                        <i class="fas fa-brain"></i>
+                        Generate Tests
+                    </button>
+                    <button class="btn secondary" id="preview-tests">
+                        <i class="fas fa-eye"></i>
+                        Preview Tests
+                    </button>
+                </div>
+
+                <div class="ai-progress" id="ai-progress" style="display: none;">
+                    <h3>Generating Tests...</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="ai-progress-fill"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span id="ai-status">Analyzing page structure...</span>
+                        <span id="ai-percentage">0%</span>
+                    </div>
+                </div>
+
+                <div class="generated-tests">
+                    <h2>Generated Test Cases</h2>
+                    <div id="generated-tests-container">
+                        <!-- Generated tests will be displayed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Execution Tab -->
+            <div id="execution" class="tab-content">
+                <div class="tab-header">
+                    <h1>Test Execution</h1>
+                    <p>Run and monitor test execution</p>
+                </div>
+
+                <div class="execution-controls">
+                    <button class="btn success" id="run-selected-tests">
+                        <i class="fas fa-play"></i>
+                        Run Selected Tests
+                    </button>
+                    <button class="btn primary" id="run-all-tests">
+                        <i class="fas fa-play-circle"></i>
+                        Run All Tests
+                    </button>
+                    <button class="btn danger" id="stop-execution" disabled>
+                        <i class="fas fa-stop"></i>
+                        Stop Execution
+                    </button>
+                    <button class="btn secondary" id="schedule-tests">
+                        <i class="fas fa-clock"></i>
+                        Schedule Tests
+                    </button>
+                </div>
+
+                <div class="execution-status" id="execution-status">
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <span class="label">Status:</span>
+                            <span class="value" id="exec-status">Ready</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">Progress:</span>
+                            <span class="value" id="exec-progress">0/0</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">Passed:</span>
+                            <span class="value" id="exec-passed">0</span>
+                        </div>
+                        <div class="status-item">
+                            <span class="label">Failed:</span>
+                            <span class="value" id="exec-failed">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="execution-progress" id="execution-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="exec-progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="test-queue">
+                    <h2>Test Queue</h2>
+                    <div class="queue-list" id="test-queue-list">
+                        <!-- Test queue items will be displayed here -->
+                    </div>
+                </div>
+
+                <div class="execution-log">
+                    <h2>Execution Log</h2>
+                    <div class="log-container" id="execution-log">
+                        <!-- Execution logs will be displayed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Tab -->
+            <div id="results" class="tab-content">
+                <div class="tab-header">
+                    <h1>Test Results</h1>
+                    <p>View and analyze test execution results</p>
+                </div>
+
+                <div class="results-summary">
+                    <div class="summary-cards">
+                        <div class="summary-card success">
+                            <h3 id="results-passed">0</h3>
+                            <p>Passed</p>
+                        </div>
+                        <div class="summary-card danger">
+                            <h3 id="results-failed">0</h3>
+                            <p>Failed</p>
+                        </div>
+                        <div class="summary-card warning">
+                            <h3 id="results-skipped">0</h3>
+                            <p>Skipped</p>
+                        </div>
+                        <div class="summary-card info">
+                            <h3 id="results-total">0</h3>
+                            <p>Total</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-chart">
+                    <canvas id="results-chart-canvas"></canvas>
+                </div>
+
+                <div class="results-table">
+                    <table id="results-table">
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Status</th>
+                                <th>Duration</th>
+                                <th>Error Message</th>
+                                <th>Screenshot</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <div class="tab-header">
+                    <h1>Reports</h1>
+                    <p>Generate and view detailed test reports</p>
+                </div>
+
+                <div class="report-controls">
+                    <button class="btn primary" id="generate-html-report">
+                        <i class="fas fa-file-code"></i>
+                        Generate HTML Report
+                    </button>
+                    <button class="btn secondary" id="generate-pdf-report">
+                        <i class="fas fa-file-pdf"></i>
+                        Generate PDF Report
+                    </button>
+                    <button class="btn secondary" id="export-csv">
+                        <i class="fas fa-file-csv"></i>
+                        Export to CSV
+                    </button>
+                </div>
+
+                <div class="report-preview" id="report-preview">
+                    <!-- Report preview will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="tab-header">
+                    <h1>Settings</h1>
+                    <p>Configure application settings</p>
+                </div>
+
+                <div class="settings-sections">
+                    <div class="settings-section">
+                        <h2>Salesforce Configuration</h2>
+                        <form id="salesforce-config">
+                            <div class="form-group">
+                                <label for="sf-url">Salesforce URL:</label>
+                                <input type="url" id="sf-url" placeholder="https://your-org.lightning.force.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="sf-username">Username:</label>
+                                <input type="text" id="sf-username">
+                            </div>
+                            <div class="form-group">
+                                <label for="sf-password">Password:</label>
+                                <input type="password" id="sf-password">
+                            </div>
+                            <div class="form-group">
+                                <label for="sf-token">Security Token:</label>
+                                <input type="password" id="sf-token">
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="settings-section">
+                        <h2>AI Configuration</h2>
+                        <form id="ai-config">
+                            <div class="form-group">
+                                <label for="openai-key">OpenAI API Key:</label>
+                                <input type="password" id="openai-key">
+                            </div>
+                            <div class="form-group">
+                                <label for="ai-model-config">Default Model:</label>
+                                <select id="ai-model-config">
+                                    <option value="gpt-4">GPT-4</option>
+                                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="settings-section">
+                        <h2>Test Execution</h2>
+                        <form id="execution-config">
+                            <div class="form-group">
+                                <label for="timeout">Default Timeout (seconds):</label>
+                                <input type="number" id="timeout" value="30">
+                            </div>
+                            <div class="form-group">
+                                <label for="parallel-tests">Parallel Execution:</label>
+                                <input type="number" id="parallel-tests" value="1" min="1" max="10">
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" id="screenshot-on-failure" checked>
+                                    Screenshot on Failure
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="settings-actions">
+                    <button class="btn primary" id="save-settings">
+                        <i class="fas fa-save"></i>
+                        Save Settings
+                    </button>
+                    <button class="btn secondary" id="reset-settings">
+                        <i class="fas fa-undo"></i>
+                        Reset to Defaults
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="app-version">v1.0.0</span>
+                <span id="current-time"></span>
+            </div>
+            <div class="status-right">
+                <span id="memory-usage">Memory: 0 MB</span>
+                <div class="connection-indicator">
+                    <i class="fas fa-wifi" id="network-status"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal" id="test-case-modal">
+            <div class="modal-header">
+                <h2>Test Case Details</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal content will be dynamically populated -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary modal-cancel">Cancel</button>
+                <button class="btn primary modal-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

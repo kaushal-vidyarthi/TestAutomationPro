@@ -35,15 +35,15 @@ class AppSettings:
         self.LOCAL_LLM_MODEL = os.getenv("LOCAL_LLM_MODEL", "llama2")
         self.USE_LOCAL_LLM = os.getenv("USE_LOCAL_LLM", "true").lower() == "true"
         
-        # Crawler settings - Enhanced for better reliability
-        self.CRAWLER_TIMEOUT = int(os.getenv("CRAWLER_TIMEOUT", "60"))
-        self.CRAWLER_HEADLESS = os.getenv("CRAWLER_HEADLESS", "false").lower() == "true"  # Default to visible for debugging
+        # Crawler settings
+        self.CRAWLER_TIMEOUT = int(os.getenv("CRAWLER_TIMEOUT", "30"))
+        self.CRAWLER_HEADLESS = os.getenv("CRAWLER_HEADLESS", "true").lower() == "true"
         self.MAX_PAGES_PER_CRAWL = int(os.getenv("MAX_PAGES_PER_CRAWL", "50"))
         
-        # Salesforce settings - Test credentials provided by user
-        self.SF_LOGIN_URL = os.getenv("SF_LOGIN_URL", "https://nosoftware-fun-47332-dev-ed.scratch.my.site.com/ESE25/login")
-        self.SF_USERNAME = os.getenv("SF_USERNAME", "kaushal.vidyarthi@fantailtech.com")
-        self.SF_PASSWORD = os.getenv("SF_PASSWORD", "Q@12345678")
+        # Salesforce settings
+        self.SF_LOGIN_URL = os.getenv("SF_LOGIN_URL", "https://login.salesforce.com")
+        self.SF_USERNAME = os.getenv("SF_USERNAME", "")
+        self.SF_PASSWORD = os.getenv("SF_PASSWORD", "")
         self.SF_SECURITY_TOKEN = os.getenv("SF_SECURITY_TOKEN", "")
         
         # Test execution settings
