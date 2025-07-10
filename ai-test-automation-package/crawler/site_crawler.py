@@ -163,12 +163,17 @@ class SiteCrawler:
             
             # Navigate to login page
             await page.goto(login_url, wait_until='networkidle')
-            await page.wait_for_timeout(2000)
+            await page.wait_for_timeout(5000)
             
             # Fill login form
-            username_selector = '#username'
-            password_selector = '#password'
-            login_button_selector = '#Login'
+            username_selector = 'input[autocomplete="username"]'
+            password_selector = 'input[type="password"]'
+            login_button_selector = '.comm-login-form__login-button'
+            
+            logging.info("Filling login form")
+            logging.debug(f"Username selector: {username_selector}, Password selector: {password_selector}")
+            logging.debug(f"Login button selector: {login_button_selector}")
+            
             
             await page.fill(username_selector, username)
             await page.fill(password_selector, password)
@@ -179,7 +184,7 @@ class SiteCrawler:
             # Wait for login to complete
             try:
                 # Wait for either successful login or error
-                await page.wait_for_url(lambda url: 'login.salesforce.com' not in url, timeout=30000)
+                await page.wait_for_url(lambda url: 'my.site.com' not in url, timeout=30000)
                 logging.info("Login successful")
                 
                 # Handle any additional authentication prompts
