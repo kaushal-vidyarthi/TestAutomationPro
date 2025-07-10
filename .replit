@@ -16,6 +16,10 @@ author = "agent"
 task = "workflow.run"
 args = "AI Test Automation Tool"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Web Interface"
+
 [[workflows.workflow]]
 name = "AI Test Automation Tool"
 author = "agent"
@@ -23,3 +27,16 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "xvfb-run -a -s \"-screen 0 1920x1080x24\" python main.py"
+
+[[workflows.workflow]]
+name = "Web Interface"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python web_interface.py"
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
