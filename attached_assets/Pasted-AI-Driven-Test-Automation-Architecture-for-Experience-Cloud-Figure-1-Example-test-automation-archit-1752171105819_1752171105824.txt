@@ -1,0 +1,127 @@
+AI-Driven Test Automation Architecture for Experience Cloud
+Figure 1: Example test automation architecture combining a user-friendly UI, an AI-driven backend, and optional cloud integration (adapted from modern AI-testing designs). The system is organized into modular components: (1) a User Interface (UI) frontend for non-technical users to add tests and trigger actions; (2) a Site Crawler/Agent that loads pages (e.g. via Selenium or Playwright) and extracts the page structure; (3) an AI Test Generator (LLM-based) that processes user input or crawled page content to suggest test steps; (4) a Knowledge Store (database and/or vector database) to save test cases and UI element information; and (5) Optional Cloud Services for heavy model inference or CI/CD integration. For example, recent AI agents use an LLM to interpret the page’s DOM (often simplified to an accessibility tree) and decide the next action to execute via a browser driver
+medium.com
+. Such an AI-driven agent can “observe” the page, “reason” via an LLM, and then “act” (clicks, typing) just like a human tester
+medium.com
+medium.com
+. The architecture supports running entirely on local machines (using a local LLM and storage) or connecting to cloud APIs for extra capacity (e.g. Azure OpenAI or AWS) when needed, while always keeping the interface simple for end users.
+Key Components and Flow
+User-Friendly GUI: A desktop or web app interface (e.g. built with Electron, React, or PyQt) lets users manually add/edit test cases and click buttons to run tasks. Non-technical users can input requirements in plain language or use forms to define test scenarios. AI can even convert high-level descriptions into structured tests
+autify.com
+, enabling product managers and PMs to contribute directly to test creation
+autify.com
+. The GUI will display existing tests from the database and show suggested tests after crawling. Outputs (pass/fail, logs) can be presented with an HTML report (for example, using Allure as in modern frameworks) so results are clear and visually accessible
+medium.com
+browserstack.com
+.
+Site Crawler/Automation Agent: This component uses web-automation tools like Selenium or Playwright to navigate the Experience Cloud site (e.g. logging in, traversing pages). It captures each page’s content and interactive elements. Inspired by projects like browser-use
+medium.com
+, the crawler can convert each page into a simplified DOM or accessibility tree of UI elements (buttons, fields, links). That structured page context is sent to the AI for analysis. For example, the Google Cloud example inspects the page and simplifies its DOM into an “accessibility tree” which is then fed to the LLM to decide actions
+medium.com
+. This approach is resilient to dynamic UIs; e.g. Experience Cloud sites use Lightning Web Components (LWC) with dynamic element IDs, so relying on visual or semantic cues (via AI) is more robust than fixed selectors
+medium.com
+provar.com
+.
+AI Test-Generator (LLM): A central AI model (e.g. a ChatGPT-like LLM or open-source equivalent) reads natural-language instructions or page content and outputs test steps. For example, feeding a user story or requirement into the LLM produces Gherkin scenarios or step-by-step instructions
+autify.com
+. The AI can automatically identify edge cases and generate negative tests
+autify.com
+. When invoked (e.g. via “Suggest Tests” button), the LLM examines the crawled page context and proposes test cases (e.g. “Verify Sign Up button opens registration”) by understanding UI components semantically. Modern AI-driven testing tools indeed parse UI designs or HTML to suggest tests
+autify.com
+. The system may use retrieval-augmented generation (RAG): storing known UI elements (with descriptions and screenshots) in a vector DB so the AI can match new elements to past ones
+medium.com
+. In practice, the LLM-and-agent loop iterates: it receives the current UI tree and a task (“Generate tests for this page”), then outputs a plan. This mimics human testers and overcomes traditional brittleness
+medium.com
+medium.com
+.
+Knowledge Store (DB/Vector DB): Test cases (both user-added and AI-generated) are saved in a local database (e.g. SQLite or MongoDB). The system also records UI element metadata (descriptions, screenshots, embeddings). As described in literature, a vector database (like Chroma) can index UI element embeddings so that semantic searches can match actions to elements
+medium.com
+. This store enables the AI to “remember” elements and speeds up future crawls. All test cases are versioned and can be exported (e.g. as code or Gherkin) for execution. In addition, integrating with CI/CD tools is possible: for example, one could push generated test cases into a Git or Jira stream for traceability
+optimusinfo.com
+.
+Offline vs Cloud: By default, the app runs locally so that everything (crawler, AI model, DB) lives on the user’s machine. To support offline mode, one can use open-source LLMs (like LLaMA, GPT4All, Ollama) which work without internet
+aifire.co
+. For instance, Gorilla LLM is explicitly designed for local deployment, keeping data on-device
+aifire.co
+. If available, cloud integration (e.g. calling Azure OpenAI) can be offered as an option to leverage larger models or parallel execution. This hybrid design ensures privacy and low latency while still allowing “pay-as-you-go” cloud compute when needed.
+Test Execution & Reporting: Once tests are defined, they can be executed using a testing framework (e.g. pytest or Jest). For example, tests could run in parallel against Selenium/Playwright browser sessions. Pytest fixtures (as shown in AI-driven examples) would inject the AI agent and browser session into test functions
+medium.com
+. Results (pass/fail, logs, screenshots) are captured and fed into an HTML report (Allure Report) for user-friendly output
+medium.com
+. This way, end users get an interactive dashboard of results rather than raw console output.
+In summary, the architecture (Fig. 1) connects a simple GUI to a powerful AI-assisted backend. It follows best practices of test automation: separating layers (unit tests, integration, end-to-end) in a “test pyramid”
+browserstack.com
+ and using modular components. Critically, it leverages AI so that writing tests is as easy as writing plain-language requirements – dramatically speeding test creation while improving coverage
+autify.com
+.
+Task Breakdown
+We will divide development into phases and tasks, as a senior AI/QA engineer would plan:
+Requirements & Design: Clarify functional and nonfunctional requirements (user stories, target Experience Cloud features). Create the detailed architecture diagram (as above) and data flow. Decide on tech stack: e.g. Python backend, React/Electron frontend, and choose automation libs (Selenium or Playwright). Review similar architectures in literature
+browserstack.com
+medium.com
+ to ensure completeness.
+Environment Setup: Set up version control (Git), project repositories, and development environment. Prepare frameworks: for Python, install dependencies (e.g. selenium, playwright, pytest, transformers or openai). If using Node/JS, set up node, react, etc. Ensure offline LLM libraries are available (like llama.cpp or local inference engines) for offline mode
+aifire.co
+.
+Frontend (GUI) Prototype: Develop a basic user interface where users can:
+See a dashboard of existing test cases (read/write from the DB).
+Click a button “Add Test Case” to open a form (fields: Title, Steps, Expected Result) and save to DB.
+Click a “Crawl & Suggest” button to start the crawling/AI pipeline.
+View results (in progress/completed) and final suggested tests.
+Use user-friendly design (e.g. drag-and-drop list, clear buttons). For local deployment, consider packaging as a desktop app (Electron) or a local web server. Ensure ease-of-use: allow non-technical entry of test scenarios (e.g. natural-language text fields). This matches the idea that “teams can use AI to generate test cases from product specs”
+autify.com
+ and involve non-technical stakeholders
+autify.com
+.
+Crawler/Automation Agent: Implement the web-crawling component. This will:
+Log into the Salesforce Experience Cloud site (using stored credentials).
+Use Selenium or Playwright to visit each page (or follow links).
+For each page, extract the DOM or use a page-selecting API to gather interactive elements (buttons, inputs, etc). We can simplify this into an accessibility tree (as in 
+medium.com
+) capturing element types, labels, and hierarchy.
+Save page context (HTML or JSON) for use by the AI.
+This component is similar to existing AI-test agents that “inspect the current web page, simplifying its DOM into a clean, actionable tree”
+medium.com
+. Ensure the crawler can run headlessly and return structured data to the AI module.
+AI Integration (Test Generation Engine): Develop the logic for invoking the LLM. This includes:
+Designing prompt templates: for example, given a page structure and task (“suggest UI tests”), prompt the LLM to output scenarios or step lists. Use few-shot or system instructions to get consistent format (e.g. Gherkin or JSON).
+Connect to the chosen model: either a local model (Hugging Face, llama, GPT4All) or an API (OpenAI). For offline mode, use an open model via llama.cpp or Ollama
+aifire.co
+. For highest quality, allow optional use of cloud LLM.
+Implement retrieval: store element descriptions in a vector DB (e.g. Chroma) and use semantic search so that if the AI says “click submit”, we find the “Submit” button by similarity
+medium.com
+. This RAG step helps map language to UI elements robustly.
+Incorporate iterative prompting if needed (e.g. loop: agent asks LLM for next action, executes it, updates state).
+This component realizes the “AI agent” vision described in research
+medium.com
+medium.com
+: the LLM makes human-like decisions about UI tests.
+Test Case & Results Storage: Implement the database schema and logic. Store:
+User-created test cases (title, steps, expected result, metadata).
+AI-suggested tests (flagged as suggestions until user confirms).
+Execution history and results (time, success/fail, logs).
+Use a local DB (like SQLite) or simple file store. Also maintain the vector store of UI elements for RAG. Provide APIs (backend endpoints) for the frontend to query/update tests. This ensures users have “editability” of tests at all times.
+Execution Engine & Reporting: Integrate a test runner. Once tests are defined, the user can execute them. Implement a test runner using a framework like pytest or Playwright tests. For example, auto-generate pytest test functions from the stored test steps, using fixtures for browser and AI agents
+medium.com
+. Configure Allure (or a similar report tool) to capture results with screenshots
+medium.com
+. The GUI can show a summary or link to the full report. This follows best-practice: using pytest for structure and Allure for a human-friendly dashboard
+medium.com
+.
+Cloud Integration (Optional): For users who want it, add connectors to cloud services. For example:
+Allow sending heavy AI queries to an Azure or OpenAI endpoint if online.
+Store backups of tests in a cloud repository (e.g. push to Git or Jira via API).
+Run tests on a cloud device farm (BrowserStack) or CI pipeline by exporting the test suite.
+This enhances capabilities but is optional; the core functionality remains offline/local.
+Quality Assurance & Testing: As we build the tool, write unit and integration tests for each module. Follow a test pyramid: create unit tests for utility functions, integration tests for backend, and E2E tests (using the UI) to validate overall flow
+browserstack.com
+. For example, test that the crawler correctly extracts elements, and that the LLM integration returns plausible steps. Use code review and continuous testing to ensure reliability. The AI-driven design itself is meant to reduce maintenance: by generating tests and adapting to UI changes, it lowers the manual upkeep burden
+autify.com
+.
+Deployment & Packaging: Finally, package the application for the target environment. If it’s a desktop app, bundle it with all dependencies. If web-based, provide a simple installer or container. Document the installation steps so that even non-technical users can set it up. Include a user guide explaining how to add tests, crawl the site, and interpret the results.
+Throughout development, reference best practices and existing research. For instance, ensure the architecture is scalable and maintainable as recommended in testing guides
+browserstack.com
+. The use of AI is supported by recent studies showing that AI can automate test design and simulate user interactions in UIs
+medium.com
+autify.com
+. By the end of this one-shot build, we will have a fully working prototype: an AI-assisted test automation tool that can run locally, provide a friendly GUI, allow on-demand test creation, and crawl the Experience Cloud site to automatically suggest comprehensive test cases.
