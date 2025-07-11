@@ -30,8 +30,8 @@ class AppSettings:
         self.LOG_FILE = self.logs_dir / "app.log"
         
         # AI/LLM settings
-        self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-        self.OPENAI_MODEL = "gpt-4o"  # newest OpenAI model released May 13, 2024
+        # self.OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+        self.OPENAI_MODEL = "gpt-4o" 
         self.LOCAL_LLM_MODEL = os.getenv("LOCAL_LLM_MODEL", "llama2")
         self.USE_LOCAL_LLM = os.getenv("USE_LOCAL_LLM", "true").lower() == "true"
         
@@ -41,10 +41,12 @@ class AppSettings:
         self.MAX_PAGES_PER_CRAWL = int(os.getenv("MAX_PAGES_PER_CRAWL", "50"))
         
         # Salesforce settings
-        self.SF_LOGIN_URL = os.getenv("SF_LOGIN_URL", "https://login.salesforce.com")
-        self.SF_USERNAME = os.getenv("SF_USERNAME", "")
-        self.SF_PASSWORD = os.getenv("SF_PASSWORD", "")
-        self.SF_SECURITY_TOKEN = os.getenv("SF_SECURITY_TOKEN", "")
+        # self.SF_LOGIN_URL = os.getenv("SF_LOGIN_URL", "https://login.salesforce.com")
+        # self.SF_USERNAME = os.getenv("SF_USERNAME", "")
+        # self.SF_PASSWORD = os.getenv("SF_PASSWORD", "")
+        # self.SF_SECURITY_TOKEN = os.getenv("SF_SECURITY_TOKEN", "")
+
+        
         
         # Test execution settings
         self.TEST_TIMEOUT = int(os.getenv("TEST_TIMEOUT", "60"))
